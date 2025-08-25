@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import requests
 from io import BytesIO
+from tkinter import Toplevel
 
 
 def load_image(url):
@@ -17,32 +18,35 @@ def load_image(url):
         return None
 
 
-def set_image():
+def open_new_window():
     img = load_image(url)
 
     if img:
-        label.config(image=img)
+        new_window = Toplevel()
+        new_window.title("Котик")
+        new_window.geometry("600x480")
+        label = Label(new_window, image = img)
+        label.pack()
         label.image = img
+
+
+
+
 
 window = Tk()
 window.title("Котики!")
 window.geometry("600x520")
-
-label = Label()
-label.pack()
-
-# updete_button = Button(text="Обновить", command=set_image)
-# updete_button.pack()
 
 menu_bar = Menu(window)
 window.config(menu=menu_bar)
 
 file_menu = Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Файл", menu=file_menu)
-file_menu.add_command(label="Обновить", command=set_image)
+file_menu.add_command(label="Загрузить картинку", command=open_new_window)
+file_menu.add_separator()
+file_menu.add_command(label="Выход", command=window.destroy)
 
 url = "http://cataas.com/cat"
 
-set_image()
 
 window.mainloop()
